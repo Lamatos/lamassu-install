@@ -67,7 +67,7 @@ if [[ "$UBUNTU_VERSION" == "20.04" ]]; then
   export NPM_BIN=/usr/lib/node_modules
 
   # Check if ETH was transacted for the first time before 8.0
-  SERVER_RELEASE=$(node -p -e "require('$(npm root -g)/lamassu-server/package.json').version")
+  SERVER_RELEASE=$(node -p -e "require('/usr/lib/node_modules/lamassu-server/package.json').version")
 
   # SERVER_RELEASE should be empty if the command fails, such as if the file doesn't exist
   if [ ${SERVER_RELEASE} = "" ] || [ $(printf "%s\n" "$SERVER_RELEASE" "8.0.0" | sort -V | head -1) = "$SERVER_RELEASE" ] || [ "$SERVER_RELEASE" = "8.0.0-beta.6" ]
@@ -163,8 +163,8 @@ if [[ "$UBUNTU_VERSION" == "20.04" ]]; then
   lamassu-ofac-update-sources >> ${LOG_FILE} 2>&1
 
   decho "updating supervisor conf"
-  perl -i -pe 's/command=.*/command=$ENV{NPM_BIN}\/lamassu-server/g' /etc/supervisor/conf.d/lamassu-server.conf >> ${LOG_FILE} 2>&1
-  perl -i -pe 's/command=.*/command=$ENV{NPM_BIN}\/lamassu-admin-server/g' /etc/supervisor/conf.d/lamassu-admin-server.conf >> ${LOG_FILE} 2>&1
+  perl -i -pe 's/command=.*/command=/usr/bin/lamassu-server/g' /etc/supervisor/conf.d/lamassu-server.conf >> ${LOG_FILE} 2>&1
+  perl -i -pe 's/command=.*/command=/usr/bin/lamassu-admin-server/g' /etc/supervisor/conf.d/lamassu-admin-server.conf >> ${LOG_FILE} 2>&1
   perl -i -pe 's/environment=.*/environment=HOME="\/root",NODE_ENV="production"/g' /etc/supervisor/conf.d/lamassu-server.conf >> ${LOG_FILE} 2>&1
   perl -i -pe 's/environment=.*/environment=HOME="\/root",NODE_ENV="production"/g' /etc/supervisor/conf.d/lamassu-admin-server.conf >> ${LOG_FILE} 2>&1
   cat <<EOF >> /etc/supervisor/supervisord.conf
@@ -178,7 +178,7 @@ EOF
   supervisorctl start lamassu-admin-server >> ${LOG_FILE} 2>&1
 
   decho "updating backups conf"
-  BACKUP_CMD=${NPM_BIN}/lamassu-backup-pg
+  BACKUP_CMD=/usr/bin/lamassu-backup-pg
   BACKUP_CRON="@daily $BACKUP_CMD > /dev/null"
   ( (crontab -l 2>/dev/null || echo -n "") | grep -v '@daily.*lamassu-backup-pg'; echo $BACKUP_CRON ) | crontab - >> $LOG_FILE 2>&1
   $BACKUP_CMD >> $LOG_FILE 2>&1
