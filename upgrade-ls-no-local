@@ -64,7 +64,7 @@ if [[ "$UBUNTU_VERSION" == "20.04" ]]; then
   echo -e "\033[1mUpdating lamassu-server to Grand Gilgamesh v8.1.0-beta.3...\033[0m"
   echo
 
-  export NPM_BIN=$(npm -g bin)
+  export NPM_BIN=/usr/lib/node_modules
 
   # Check if ETH was transacted for the first time before 8.0
   SERVER_RELEASE=$(node -p -e "require('$(npm root -g)/lamassu-server/package.json').version")
@@ -93,7 +93,7 @@ if [[ "$UBUNTU_VERSION" == "20.04" ]]; then
         : # no-op, continue the upgrade
       elif [ $FIRST_ETH_TX_TIME \> $FIRST_FF_MIGRATION_TIME ]; then
         echo -e "\n\033[0;31mAn Ethereum transaction was detected to have been made for the first time after the v8.0 beta upgrade.\n\nThis is okay and funds are safe, but it will require a unique update path. In order to continue, please contact support for specific update instructions.\n\nMeanwhile, your server and machine(s) continue to run on their current versions.\033[0m\n"
-#        curl -o $(npm root -g)/lamassu-server/bin/lamassu-eth-sweep-to-new-wallet https://raw.githubusercontent.com/lamassu/lamassu-server/release-8.0/bin/lamassu-eth-sweep-to-new-wallet >> ${LOG_FILE} 2>&1
+#        curl -o /usr/lib/node_modules/lamassu-server/bin/lamassu-eth-sweep-to-new-wallet https://raw.githubusercontent.com/lamassu/lamassu-server/release-8.0/bin/lamassu-eth-sweep-to-new-wallet >> ${LOG_FILE} 2>&1
         rmdir /var/lock/lamassu-update
         exit 1
       fi
@@ -106,7 +106,7 @@ if [[ "$UBUNTU_VERSION" == "20.04" ]]; then
   supervisorctl stop lamassu-admin-server >> ${LOG_FILE} 2>&1
 
   decho "unlinking old executables"
-  for i in lamassu-* hkdf bip39; do rm -fv $NPM_BIN/$i; done >> ${LOG_FILE} 2>&1
+  for i in lamassu-* hkdf bip39; do rm -fv /usr/bin/$i; done >> ${LOG_FILE} 2>&1
 
   if [ -d "/usr/lib/node_modules/lamassu-server" ]; then
       BKP_NAME=lamassu-server-${timestamp}
@@ -126,16 +126,16 @@ if [[ "$UBUNTU_VERSION" == "20.04" ]]; then
 
   tar -xzf /tmp/lamassu-server.tar.gz -C /usr/lib/node_modules/ >> $LOG_FILE 2>&1
 
-  NODE_MODULES=$(npm -g root)
+  NODE_MODULES=/usr/lib/node_modules
   decho "Creating symlinks..."
-  for i in lamassu-* hkdf bip39; do cp -s $NODE_MODULES/lamassu-server/bin/$i $NPM_BIN/; done >> ${LOG_FILE} 2>&1
+  for i in lamassu-* hkdf bip39; do cp -s $NODE_MODULES/lamassu-server/bin/$i /usr/bin/; done >> ${LOG_FILE} 2>&1
   chmod +x $NODE_MODULES/lamassu-server/bin/* >> ${LOG_FILE} 2>&1
 
   decho "rebuilding npm deps"
-  cd $(npm root -g)/lamassu-server/ >> ${LOG_FILE} 2>&1
+  cd /usr/lib/node_modules/lamassu-server/ >> ${LOG_FILE} 2>&1
   npm rebuild >> ${LOG_FILE} 2>&1
 
-  NODE_MODULES=$(npm -g root)
+  NODE_MODULES=/usr/lib/node_modules
   CONFIG_DIR=/etc/lamassu
 
   if [ ! -f $CONFIG_DIR/.env ]; then
