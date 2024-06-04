@@ -121,9 +121,9 @@ if [[ "$UBUNTU_VERSION" == "20.04" ]]; then
       mv -v "${NODE_MODULES}/lamassu-server" "${NODE_MODULES}/${BKP_NAME}" >> ${LOG_FILE} 2>&1
   fi
 
-  decho "updating lamassu-server to v10.0.0-rc.5..."
-  sourceHash=$'e6602b0d45a80d8b6e32901f8dfbf5e5573e8c571d0959ffdba6c52945cff4eb'
-  curl -sSLo /tmp/lamassu-server.tar.gz https://github.com/lamassu/lamassu-server/releases/download/v10.0.0-rc.5/lamassu-server-v10.0.0-rc.5.tar.gz >> $LOG_FILE 2>&1
+  decho "updating lamassu-server to v10.0.0-rc.9..."
+  sourceHash=$'e8f171c4a9d5bf8a9456f355ed4f0e77442edb17978071d1d0970c1f30853e51'
+  curl -sSLo /tmp/lamassu-server.tar.gz https://github.com/lamassu/lamassu-server/releases/download/v10.0.0-rc.9/lamassu-server-v10.0.0-rc.9.tar.gz >> $LOG_FILE 2>&1
   hash=$(sha256sum /tmp/lamassu-server.tar.gz | awk '{print $1}' | sed 's/ *$//g')
 
   if [ $hash != $sourceHash ] ; then
