@@ -61,8 +61,8 @@ if ! mkdir /var/lock/lamassu-update; then
   exit 1
 fi
 
-if [[ "$UBUNTU_VERSION" == "20.04" ]]; then
-  echo -e "\033[1mDetected Ubuntu version: 20.04. Your operating system is up to date.\033[0m"
+if [[ $(echo "$UBUNTU_VERSION >= 20.04" | bc -l) == 1 ]]; then
+  echo -e "\033[1mDetected Ubuntu version: $UBUNTU_VERSION. Your operating system is up to date.\033[0m"
   echo
   echo -e "\033[1mUpdating lamassu-server to v11.0.0...\033[0m"
   echo
@@ -208,7 +208,7 @@ EOF
   echo
 else
   echo
-  echo -e "\033[0;31mOld Ubuntu version detected ($UBUNTU_VERSION). Make sure that Ubuntu is on either version 16.04 or 18.04 and update it.\033[0m"
+  echo -e "\033[0;31mOld Ubuntu version detected ($UBUNTU_VERSION). Ubuntu 20.04 or higher is required. Please update your operating system.\033[0m"
   echo "To update this machine's operating system, please run the following command in this machine's terminal:"
   echo
   echo -e "\033[1mcurl -sS https://raw.githubusercontent.com/lamassu/lamassu-install/electric-enlil/upgrade-os | bash\033[0m"

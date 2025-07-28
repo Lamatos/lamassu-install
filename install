@@ -91,12 +91,12 @@ if [ "$(whoami)" != "root" ]; then
 fi
 
 release=$(lsb_release -rs)
-if [ "$release" != "20.04" ]; then
+if [ "$release" != "24.04" ]; then
     echo "You're attempting to install on an unsupported Linux distribution or release ("$release")."
     echo
     uname -a
     echo
-    echo "Please return to DigitalOcean and create a droplet running Ubuntu 20.04 (LTS) x64 instead."
+    echo "Please return to DigitalOcean and create a droplet running Ubuntu 24.04 (LTS) x64 instead."
     echo
     exit 1
 fi
