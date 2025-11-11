@@ -64,7 +64,7 @@ fi
 if [[ $(echo "$UBUNTU_VERSION >= 20.04" | bc -l) == 1 ]]; then
   echo -e "\033[1mDetected Ubuntu version: $UBUNTU_VERSION. Your operating system is up to date.\033[0m"
   echo
-  echo -e "\033[1mUpdating lamassu-server to v12.0.0-beta.2...\033[0m"
+  echo -e "\033[1mUpdating lamassu-server to v12.0.0-beta.3...\033[0m"
   echo
 
   # Check if ETH was transacted for the first time before 8.0
@@ -122,9 +122,9 @@ if [[ $(echo "$UBUNTU_VERSION >= 20.04" | bc -l) == 1 ]]; then
       mv -v "${NODE_MODULES}/lamassu-server" "${NODE_MODULES}/${BKP_NAME}" >> ${LOG_FILE} 2>&1
   fi
 
-  decho "updating lamassu-server to v12.0.0-beta.2..."
-  sourceHash=$'aa259594a90c7391948baf9a78f921b5d540bac89d2a3347faba8ee474991566'
-  curl -sSLo /tmp/lamassu-server.tar.gz https://github.com/lamassu/lamassu-server/releases/download/v12.0.0-beta.2/lamassu-server-v12.0.0-beta.2.tar.gz >> $LOG_FILE 2>&1
+  decho "updating lamassu-server to v12.0.0-beta.3..."
+  sourceHash=$'86a035d4bda45942ed7a896bf394fae339e842d0f01444477847dcd66f33be6d'
+  curl -sSLo /tmp/lamassu-server.tar.gz https://github.com/lamassu/lamassu-server/releases/download/v12.0.0-beta.3/lamassu-server-v12.0.0-beta.3.tar.gz >> $LOG_FILE 2>&1
   hash=$(sha256sum /tmp/lamassu-server.tar.gz | awk '{print $1}' | sed 's/ *$//g')
 
   if [ $hash != $sourceHash ] ; then
