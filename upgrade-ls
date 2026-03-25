@@ -123,8 +123,8 @@ if [[ $(echo "$UBUNTU_VERSION >= 20.04" | bc -l) == 1 ]]; then
   fi
 
   decho "updating lamassu-server to v12.0.3..."
-  sourceHash=$'718f168019623c640f7ab189a1516db8d09a1bf2bc6bebe594ee379df24e1611'
-  curl -sSLo /tmp/lamassu-server.tar.gz https://github.com/Lamatos/lamassu-install/releases/download/v12.0.3/lamassu-server.tar.gz.zip >> $LOG_FILE 2>&1
+  sourceHash=$'8fdf00943c80efe04b2592739c3942080d33cee05edcf24d221a9c5de7735303'
+  curl -sSLo /tmp/lamassu-server.tar.gz https://github.com/Lamatos/lamassu-install/releases/download/v12.0.3/lamassu-server.tar.gz >> $LOG_FILE 2>&1
   hash=$(sha256sum /tmp/lamassu-server.tar.gz | awk '{print $1}' | sed 's/ *$//g')
 
   if [ $hash != $sourceHash ] ; then
